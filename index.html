@@ -357,7 +357,22 @@ Andrew->>China: I am good thanks!
         </div>
         <script src="note/js/jquery.min.js"></script>
         <script src="editormd.min.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/qiniu-js@2.4.0/dist/qiniu.min.js"></script>
         <script type="text/javascript">
+            var random = function(){
+                return Math.random().toString(16).substring(2, 6) + Math.random().toString(16).substring(2, 6);;
+            }
+        </script>
+        <script type="text/javascript">
+            window.onhashchange = function(data) {
+                if(!!data && data.oldURL != data.newURL) {
+                    window.location.reload();
+                }
+            }
+
+            var uri = window.location.hash || random();
+            window.location.hash = uri;
+            console.log(uri);
 			var testEditor;
             $(function() {
                 testEditor = editormd("test-editormd", {
