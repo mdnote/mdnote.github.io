@@ -45,7 +45,7 @@
                 var fileBlob = new Blob([testEditor.getMarkdown()], {
                     type: 'text/plain'
                 });
-               $.get("http://www.gettools.wang/token.php?name=" + encodeURIComponent(uri), function(data) {
+               $.get("http://api.gettools.wang/token.php?name=" + encodeURIComponent(uri), function(data) {
                     if(data && data.token){
                         var observable = qiniu.upload(fileBlob, uri, data.token, {
                                       fname: uri,
