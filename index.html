@@ -46,12 +46,7 @@
                 }
             }
 
-            var uri = window.location.hash || random();
-            window.location.hash = uri; 
-
-			var testEditor;
-
-            function autoSave() {
+            function save() {
                 var fileBlob = new Blob([testEditor.getMarkdown()], {
                     type: 'text/plain'
                 });
@@ -67,14 +62,24 @@
                         }, function(data){
                             console.error(data);
                         }, function(data){
-                            console.log("auto saved");
+                            console.log("save succeed");
+                            savedSuccessMsg();
                         }) 
-                        setTimeout(autoSave, 2000);
                     }
                });
             }
 
-            setTimeout(autoSave, 2000);
+            function savedSuccessMsg(){
+                $("#msg").show();
+                setTimeout(function() {
+                    $("#msg").hide();
+                }, 2000);
+            }
+
+            var uri = window.location.hash || random();
+            window.location.hash = uri; 
+
+			var testEditor;
 
             function load(md){
                 testEditor = editormd("test-editormd", {
@@ -89,8 +94,19 @@
                         imageUpload : true,
                         imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
                         imageUploadURL : "./php/upload.php",
+                        disabledKeyMaps : [
+                            "Ctrl-S","Cmd-S"
+                        ],
                         onload : function() {
-                            console.log('onload');
+                            var keyMap = {
+                                "Ctrl-S": function(cm) {
+                                   save();
+                                },
+                                "Cmd-S": function(cm) {
+                                   save();
+                                }
+                            };
+                            this.addKeyMap(keyMap);
                         }
                     });
             }
@@ -110,6 +126,7 @@
                 
             });
         </script>
+        <div id="msg" style="padding: 5px 10px;display: none;font-size: 18px;position: fixed;top: 50%;left: 48%;color: green;background-color: lightgrey;z-index: 100;">Saved</div>
         <footer> © 2018 - 2020 <a href="http://www.majiang.life/" target="_blank">majiang.life</a>  Powered By <a href="https://gitee.com/pandao/editor.md" target="_blank">Editor.md</a></footer>
     </body>
 </html>
